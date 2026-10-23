@@ -53,6 +53,20 @@ small{color:var(--t2);font-size:12px}
 .rr b{display:block;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--t2);font-weight:500}
 video{width:100%;max-height:360px;background:#000;object-fit:cover}
 footer{border-top:1px solid var(--ln);padding:20px 24px;color:var(--t2);font-size:13px;text-align:center}
+@media(max-width:899px){
+ .grid{display:flex;flex-direction:column;gap:24px}
+ .pvc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin:0 -24px;padding:8px 24px;background:var(--bg);border-bottom:1px solid var(--ln)}
+ .pvc .pv{flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px;padding:10px;min-height:0}
+ #qr svg{width:132px;height:132px}
+ #acts{flex:1 1 150px;width:auto!important}
+ #acts .row{gap:6px}
+ #acts .btn{padding:8px 6px;font-size:13px}
+ #cp{margin-top:6px!important}
+ #warn,#st{flex-basis:100%;font-size:12px}
+ #warn:empty,#st:empty{display:none}
+ #cap{font-size:13px;padding-top:6px}
+ h1{margin-top:8px}
+}
 </style>
 </head>
 <body>
@@ -92,8 +106,8 @@ footer{border-top:1px solid var(--ln);padding:20px 24px;color:var(--t2);font-siz
  <aside class="pvc"><div class="sticky"><div class="pv">
   <div id="frame"><div id="qr"></div><div id="cap"></div></div>
   <div class="nt w" id="warn"></div>
-  <div class="row" style="width:100%"><button class="btn" id="dp">Baixar PNG</button><button class="btn o" id="dv">Baixar SVG</button></div>
-  <button class="btn o" id="cp" style="width:100%">Copiar imagem</button>
+  <div id="acts" style="width:100%"><div class="row"><button class="btn" id="dp">Baixar PNG</button><button class="btn o" id="dv">Baixar SVG</button></div>
+  <button class="btn o" id="cp" style="width:100%;margin-top:12px">Copiar imagem</button></div>
   <div class="nt" id="st"></div>
  </div></div></aside>
 </section>
