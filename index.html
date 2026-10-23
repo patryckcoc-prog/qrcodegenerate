@@ -53,18 +53,21 @@ small{color:var(--t2);font-size:12px}
 .rr b{display:block;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--t2);font-weight:500}
 video{width:100%;max-height:360px;background:#000;object-fit:cover}
 footer{border-top:1px solid var(--ln);padding:20px 24px;color:var(--t2);font-size:13px;text-align:center}
+#acts2{display:none}
 @media(max-width:899px){
  .grid{display:flex;flex-direction:column;gap:24px}
  .pvc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin:0 -24px;padding:8px 24px;background:var(--bg);border-bottom:1px solid var(--ln)}
  .pvc .pv{flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px;padding:10px;min-height:0}
- #qr svg{width:132px;height:132px}
- #acts{flex:1 1 150px;width:auto!important}
- #acts .row{gap:6px}
- #acts .btn{padding:8px 6px;font-size:13px}
- #cp{margin-top:6px!important}
+ #qr svg{width:min(68vw,250px);height:min(68vw,250px)}
+ #acts{display:none}
+ #acts2{display:block}
+ #acts2 .row{gap:8px}
+ 
+ 
  #warn,#st{flex-basis:100%;font-size:12px}
  #warn:empty,#st:empty{display:none}
  #cap{font-size:13px;padding-top:6px}
+ #frame{padding:6px!important}
  h1{margin-top:8px}
 }
 </style>
@@ -79,6 +82,7 @@ footer{border-top:1px solid var(--ln);padding:20px 24px;color:var(--t2);font-siz
   <h1>QR codes com identidade.</h1>
   <div class="lb">Tipo de conteúdo</div><div class="chips" id="types"></div>
   <div id="form"></div><div class="er" id="err"></div>
+  <div id="acts2" style="margin-top:24px"><div class="row"><button class="btn" id="dp2">Baixar PNG</button><button class="btn o" id="dv2">Baixar SVG</button></div><button class="btn o" id="cp2" style="width:100%;margin-top:10px">Copiar imagem</button></div>
   <button class="btn o" id="adv" aria-expanded="false" aria-controls="advp" style="margin-top:28px;width:100%">Personalizar o QR: cores, logo, moldura e mais</button>
   <div id="advp" hidden>
   <h2>Estilo</h2>
@@ -131,7 +135,7 @@ footer{border-top:1px solid var(--ln);padding:20px 24px;color:var(--t2);font-siz
 /* ===== Utilidades ===== */
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 let dl=null;
-(async()=>{try{dl=await claude.use("downloads")}catch(_){dl=null}if(!dl){$("#dp").hidden=true;$("#dv").hidden=true}})();
+(async()=>{try{dl=await claude.use("downloads")}catch(_){dl=null}if(!dl){$("#dp").hidden=true;$("#dv").hidden=true;$("#dp2").hidden=true;$("#dv2").hidden=true}})();
 const note=(m)=>{$("#st").textContent=m};
 
 /* ===== Tipos de QR e validação ===== */
@@ -173,7 +177,7 @@ function checks(){const s=sty(),c=s.gr?[s.dc,s.dc2]:[s.dc],w=[];
  $("#warn").textContent=w.join(" ");
  $("#ecn").textContent=lg?"Com logo, a correção sobe para Máxima automaticamente.":""}
 function frameUI(){const s=sty(),f=$("#frame"),c=$("#cap");f.style.background=s.bc;f.style.border=s.fr?"2px solid "+s.dc:"0";f.style.padding=s.fr?"14px":"0";c.textContent=s.fr;c.style.color=s.dc;c.hidden=!s.fr}
-function render(){const r=TY[ty].b(read());$("#err").textContent=r.e||"";const ok=!r.e;["dp","dv","cp"].forEach(i=>$("#"+i).disabled=!ok);$("#g2").hidden=!$("#gr").checked;
+function render(){const r=TY[ty].b(read());$("#err").textContent=r.e||"";const ok=!r.e;["dp","dv","cp","dp2","dv2","cp2"].forEach(i=>$("#"+i).disabled=!ok);$("#g2").hidden=!$("#gr").checked;
  if(ok)cur=r.d;qr.update(opts(cur));frameUI();checks()}
 
 /* ===== Modelos prontos ===== */
@@ -253,6 +257,8 @@ function show(t){const R=$("#res");R.innerHTML="";const rows=[];let kind="Texto"
  if(url){w.innerHTML="";const p=document.createElement("div");p.className="nt w";p.style.textAlign="left";p.textContent="Este QR leva para "+host+". Abra só se você confia na origem.";const g=document.createElement("button");g.className="btn";g.style.marginTop="8px";g.textContent="Continuar";g.onclick=()=>window.open(url,"_blank","noopener");w.append(p,g)}
  R.appendChild(w)}
 async function cp(x){try{await navigator.clipboard.writeText(x);rm("Copiado.")}catch(_){rm("O navegador bloqueou a cópia. Selecione o texto manualmente.")}}
+
+[["dp2","dp"],["dv2","dv"],["cp2","cp"]].forEach(([a,b])=>$("#"+a).onclick=()=>$("#"+b).click());
 
 /* ===== Modo simples / personalizar ===== */
 $("#adv").onclick=()=>{const p=$("#advp"),abrir=p.hidden;p.hidden=!abrir;$("#adv").setAttribute("aria-expanded",String(abrir));$("#adv").textContent=abrir?"Ocultar personalização":"Personalizar o QR: cores, logo, moldura e mais"};
